@@ -180,6 +180,10 @@ class GitFilesSync:
 
 
 if __name__ == "__main__":
+    if not exists(join(GIT_ROOT, "global.cfg")):
+        exit("At present state of development, you need to have a global.cfg "
+             "file on the root of the git repository.")
+
     main_object = GitFilesSync()
 
     # What are the modified files (to update or to delete)
