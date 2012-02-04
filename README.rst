@@ -73,6 +73,14 @@ That way, you won't have to specify the remote location of the file in the
 
 **Note**: don't forget to use the absolute remote path (including first /).
 
+---------------
+Keys management
+---------------
+
+Using ssh, you'll probably want to use cryptographic keys. In order to specify
+the keys paths, you can use $(GIT_ROOT)s, which will be replaced by the path
+of your git repository.
+
 --------------------------
 Changing and synchronizing
 --------------------------

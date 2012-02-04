@@ -1,6 +1,6 @@
 [global]
 remote=user@remote_host
-key=id_remote_host
+key=$(GIT_ROOT)s/keys/id_remote_host
 
 [file1]
 dst=file1

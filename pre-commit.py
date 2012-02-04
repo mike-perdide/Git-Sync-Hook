@@ -117,6 +117,7 @@ class GitFilesSync:
 
         # What command should be used to update the file
         global_items = self.config_items(site, "global")
+        global_items.update({"GIT_ROOT": GIT_ROOT})
 
         relative_src_path = filepath.split(join(SITES_ROOT, site, "files"))[1]
 
