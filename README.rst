@@ -77,12 +77,32 @@ That way, you won't have to specify the remote location of the file in the
 Keys management
 ---------------
 
-Using ssh, you'll probably want to use cryptographic keys. In order to specify
-the keys paths, you can use $(GIT_ROOT)s, which will be replaced by the path
-of your git repository.
+Using ssh, you'll probably want to use cryptographic keys. Create a **keys/**
+directory in your site directory and copy or create a pair of keys in
+**keys/**. For instance::
+
+    paris_server/keys/server.pub
+    paris_server/keys/server
+
+Edit **site.cfg** to specify the name of the private key::
+
+    key=-i $(_SPECIAL_SITE_)s/keys/server
+
+------------------------------------------
+Special values for the configuration files
+------------------------------------------
+
+In order to be able to specify paths in the configuration file, we need some
+dynamic variables (need for an system-independant specification + we can't use
+relative paths, a git commit can be made from everywhere in the repository).
+
+You can use these for specifying your paths::
+
+    $(_SPECIAL_SITE_)s    : replaced by the absolute path to your site directory
+    $(_SPECIAL_GIT_ROOT)s : replaced by the absolute path to the root of the repository
 
 --------------------------
-Changing and synchronizing
+Amending and synchronizing
 --------------------------
 
 TODO

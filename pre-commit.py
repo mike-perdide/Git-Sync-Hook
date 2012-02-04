@@ -81,6 +81,8 @@ class GitFilesSync:
         self._global_conf = RawConfigParser()
         self._global_conf.read(join(GIT_ROOT, "global.cfg"))
 
+        self._special_values = {"_SPECIAL_GIT_ROOT_": GIT_ROOT}
+
         for site in listdir(SITES_ROOT):
             self.read_config_from_site(site)
 
@@ -111,16 +113,24 @@ class GitFilesSync:
 
         global_config_items.update(site_config_items)
 
+        for item in global_config_items:
+            if "_SPECIAL_" in global_config_items[item]:
+                value = global_config_items[item]
+                value = value % self._special_values
+                global_config_items[item] = value
+
         return global_config_items
 
     def process_file_to_update(self, filepath):
         site = site_from_file(filepath)
+
+        self._special_values["_SPECIAL_SITE_"] = join(SITES_ROOT, "sites")
+
         if self._modified_sites and site not in self._modified_sites:
             print "Warning, 2 sites or more modified"
 
         # What command should be used to update the file
         global_items = self.config_items(site, "global")
-        global_items.update({"GIT_ROOT": GIT_ROOT})
 
         relative_src_path = filepath.split(join(SITES_ROOT, site, "files"))[1]
 
