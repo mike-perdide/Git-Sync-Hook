@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 from ConfigParser import RawConfigParser, NoOptionError, NoSectionError, \
                          Error as ConfigParserError
+from sys import exit
 from os import listdir, unlink
 from os.path import abspath, dirname, exists, join
 from subprocess import Popen, PIPE
@@ -15,7 +16,9 @@ class NotSyncedException(Error):
     state isn't identical to the local file state before the commit.
     """
     def __init__(self, file):
-        self._file = file
+        self.msg = "File wasn't sync'ed (someone probably modified it on the" \
+                   "remote location without using this repository)." \
+                   "Synchronizing it now will result in data loss.\n%s" % file
 
 
 def is_top_git_directory(filepath):
@@ -186,7 +189,10 @@ if __name__ == "__main__":
     # Process each file
     for filename in files_to_update:
         if "sites" in filename:
-            main_object.process_file_to_update(filename)
+            try:
+                main_object.process_file_to_update(filename)
+            except NotSyncedException, e:
+                exit(e.message)
 
     # If the site can't be reached, ask the user if he wants to delay the update
     # or abord the commit. TODO
