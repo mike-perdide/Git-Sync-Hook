@@ -1,0 +1,7 @@
+[global]
+orig_file_command=git unpack-file $(git ls-tree -r HEAD %(local_file)s|awk '{print $3}')
+remote_diff=ssh %(key)s %(remote)s 'cat %(remote_file)s' | diff - %(orig_file)s
+remote_exists=ssh %(key)s %(remote)s 'if [ -f %(remote_file)s ]; then echo yes; else echo no; fi;'
+update_command=scp %(key)s %(local_file)s %(remote)s:%(remote_file)s
+delete_command=ssh %(key)s %(remote)s 'rm %(remote_file)s'
+key=
